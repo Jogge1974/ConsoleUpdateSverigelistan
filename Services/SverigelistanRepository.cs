@@ -172,8 +172,7 @@ public sealed class SverigelistanRepository : ISverigelistanRepository
     private async Task DeleteSupabaseRowsAsync(string tablePath, DateTime updatedDate, DateTime updatedYearAgoDate)
     {
         var deleteUrl =
-            $"{tablePath}?Updated=gte.{Uri.EscapeDataString(updatedDate.ToString("yyyy-MM-dd"))}" +
-            $"&Updated=lt.{Uri.EscapeDataString(updatedYearAgoDate.ToString("yyyy-MM-dd"))}";
+            $"{tablePath}?or=(Updated.gte.{Uri.EscapeDataString(updatedDate.ToString("yyyy-MM-dd"))},Updated.lt.{Uri.EscapeDataString(updatedYearAgoDate.ToString("yyyy-MM-dd"))})";
 
         using var request = new HttpRequestMessage(HttpMethod.Delete, deleteUrl);
         ApplySupabaseHeaders(request);
